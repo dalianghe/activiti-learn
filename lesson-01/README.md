@@ -122,13 +122,13 @@
     
     tasks2.stream().forEach(task -> {
     
-        logger.info("任务名称：" + task.getName());
-    
-        taskService.claim(task.getId(), "wangwu");
-    
-        // 处理任务，流程流转至下一节点，本例即结束节点
-    
-        taskService.complete(task.getId());
+    logger.info("任务名称：" + task.getName());
+
+    taskService.claim(task.getId(), "wangwu");
+
+    // 处理任务，流程流转至下一节点，本例即结束节点
+
+    taskService.complete(task.getId());
     
     });
     
