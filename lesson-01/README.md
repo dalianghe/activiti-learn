@@ -16,9 +16,10 @@
 
 ### 引入依赖
 
-* 引入Activiti工作流引擎
+* 工作流引擎
 
- 
+依赖activiti-engine依赖：
+
     <dependency>
         <groupId>org.activiti</groupId>
         <artifactId>activiti-engine</artifactId>
@@ -56,53 +57,77 @@
 
 
     // 获得ProcessEngine流程引擎对象
+    
     ProcessEngine processEngine = ProcessEngines.getDefaultProcessEngine();
 
 * 获取流程部署对象
 
     
     // RepositoryService对象提供流程定义的存储和部署服务
+    
     RepositoryService repositoryService = processEngine.getRepositoryService();
     
 * 部署流程
 
 
     // 部署流程定义，即我们编写的bpmn2.0流程文件
+    
     repositoryService.createDeployment().addClasspathResource("bpmn/FinancialReportProcess.bpmn20.xml").deploy();
     
 * 启动任务
 
 
     RuntimeService runtimeService = processEngine.getRuntimeService();
+    
     // 启动流程，流程流转至下一节点，本例即"填写财务报表"
+    
     ProcessInstance processInstance = runtimeService.startProcessInstanceByKey("financialReport");
+    
     logger.info("流程实例ID： "+processInstance.getId());    
     
  * 财报填写
  
  
+    
     // 查询待办任务，根据组条件（accountancy）查询
+    
     TaskService taskService = processEngine.getTaskService();
+    
     List<Task> tasks = taskService.createTaskQuery().taskCandidateGroup("accountancy").list();
+    
     // 办理任务
+    
     tasks.stream().forEach(task -> {
+    
         logger.info("任务名称：" + task.getName());
+    
         // 签收任务，指定任务id和办理人
+    
         taskService.claim(task.getId(), "zhangsan");
+    
         // 处理任务，流程流转至下一节点，本例即"审核财务报表"
+    
         taskService.complete(task.getId());
+    
     });
  
  * 财报审核
  
  
     // 查询审核待办任务,根据组条件（management）查询
+    
     List<Task> tasks2 = taskService.createTaskQuery().taskCandidateGroup("management").list();
+    
     tasks2.stream().forEach(task -> {
+    
         logger.info("任务名称：" + task.getName());
+    
         taskService.claim(task.getId(), "wangwu");
+    
         // 处理任务，流程流转至下一节点，本例即结束节点
+    
         taskService.complete(task.getId());
+    
     });
     
 至此完成财报审核流程的办理，详细代码参加App类。
