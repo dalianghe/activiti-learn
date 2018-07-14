@@ -18,7 +18,7 @@
 
 * 引入Activiti工作流引擎
 
-
+ 
     <dependency>
         <groupId>org.activiti</groupId>
         <artifactId>activiti-engine</artifactId>
@@ -27,7 +27,7 @@
 
 * 引入h2内存数据库
 
-
+ 
     <dependency>
         <groupId>com.h2database</groupId>
         <artifactId>h2</artifactId>
@@ -36,7 +36,7 @@
 
 * 引入log4j依赖
 
-
+ 
     <dependency>
         <groupId>log4j</groupId>
         <artifactId>log4j</artifactId>
