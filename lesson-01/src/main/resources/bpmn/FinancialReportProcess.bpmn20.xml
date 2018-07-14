@@ -11,7 +11,7 @@
 
         <userTask id="writeReportTask" name="填写财务报表">
             <documentation>
-                Write monthly financial report for publication to shareholders.
+                撰写月度财务报告
             </documentation>
             <potentialOwner>
                 <resourceAssignmentExpression>
@@ -24,8 +24,7 @@
 
         <userTask id="verifyReportTask" name="审核财务报表">
             <documentation>
-                Verify monthly financial report composed by the accountancy department.
-                This financial report is going to be sent to all the company shareholders.
+                审核月度财务报告
             </documentation>
             <potentialOwner>
                 <resourceAssignmentExpression>

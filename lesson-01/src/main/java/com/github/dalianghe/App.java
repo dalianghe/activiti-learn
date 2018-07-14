@@ -17,69 +17,53 @@ import java.util.Map;
 import java.util.UUID;
 
 /**
- * Hello world!
+ * Activiti Hello world!
  */
 public class App {
 
-    static Logger log = LoggerFactory.getLogger(App.class);
+    static Logger logger = LoggerFactory.getLogger(App.class);
 
     public static void main(String[] args) {
 
+        // 获得ProcessEngine流程引擎对象
         ProcessEngine processEngine = ProcessEngines.getDefaultProcessEngine();
-
-        // 部署流程
+        // RepositoryService对象提供流程定义的存储和部署服务
         RepositoryService repositoryService = processEngine.getRepositoryService();
+        // 部署流程定义，即我们编写的bpmn2.0流程文件
         repositoryService.createDeployment().addClasspathResource("bpmn/FinancialReportProcess.bpmn20.xml").deploy();
+        // 查询已部署的流程定义
         List<Deployment> deployments = repositoryService.createDeploymentQuery().list();
         for(Deployment deployment : deployments){
-            log.info("部署流程ID： "+deployment.getId());
+            logger.info("部署流程ID： "+deployment.getId());
         }
-        // 启动待办
+
+        // RuntimeService
         RuntimeService runtimeService = processEngine.getRuntimeService();
+        // 启动流程，流程流转至下一节点，本例即"填写财务报表"
+        ProcessInstance processInstance = runtimeService.startProcessInstanceByKey("financialReport");
+        logger.info("流程实例ID： "+processInstance.getId());
 
-        ProcessInstance processInstance = runtimeService.startProcessInstanceByKey("financialReport", UUID.randomUUID().toString());
-        log.info("流程实例ID： "+processInstance.getId() /*+ " ，业务ID："+processInstance.getBusinessKey()*/);
-
-        // 查询填写待办
+        // 查询待办任务，根据组条件（accountancy）查询
         TaskService taskService = processEngine.getTaskService();
         List<Task> tasks = taskService.createTaskQuery().taskCandidateGroup("accountancy").list();
-        for(Task task : tasks){
-            log.info("任务名称：" + task.getName());
-        }
+        // 办理任务
+        tasks.stream().forEach(task -> {
+            logger.info("任务名称：" + task.getName());
+            // 签收任务，指定任务id和办理人
+            taskService.claim(task.getId(), "zhangsan");
+            // 处理任务，流程流转至下一节点，本例即"审核财务报表"
+            taskService.complete(task.getId());
+        });
 
-        Map<String,Object> variables = new HashMap<String,Object>();
-        variables.put("userId", "hdl");
-        // 处理任务
-        taskService.complete(tasks.get(0).getId(), variables);
-
-        // 查询我的办理
-        HistoryService historyService = processEngine.getHistoryService();
-        List<HistoricTaskInstance> historicTaskInstances = historyService.createHistoricTaskInstanceQuery().taskAssignee("hdl").list();
-        for(HistoricTaskInstance historicTaskInstance : historicTaskInstances){
-            log.info("我的办理：" + historicTaskInstance.getId());
-        }
-
-        // 查询审核待办
+        // 查询审核待办任务,根据组条件（management）查询
         List<Task> tasks2 = taskService.createTaskQuery().taskCandidateGroup("management").list();
-        for(Task task : tasks2){
-            log.info("任务名称：" + task.getName());
-        }
-        // 处理任务
-        taskService.complete(tasks2.get(0).getId());
+        tasks2.stream().forEach(task -> {
+            logger.info("任务名称：" + task.getName());
+            taskService.claim(task.getId(), "wangwu");
+            // 处理任务，流程流转至下一节点，本例即结束节点
+            taskService.complete(task.getId());
+        });
 
     }
-
-    /*public static void history(){
-        HistoryService historyService = processEngine.getHistoryService();
-        List<HistoricProcessInstance> historicProcessInstances = historyService.createHistoricProcessInstanceQuery().list();
-        for(HistoricProcessInstance historicProcessInstance : historicProcessInstances){
-            log.info(historicProcessInstance.getId());
-        }
-
-        List<HistoricTaskInstance> historicTaskInstances = historyService.createHistoricTaskInstanceQuery().list();
-        for(HistoricTaskInstance historicTaskInstance : historicTaskInstances){
-            log.info(historicTaskInstance.getId());
-        }
-    }*/
 
 }
