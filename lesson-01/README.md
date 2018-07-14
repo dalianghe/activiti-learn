@@ -99,15 +99,15 @@
     
     tasks.stream().forEach(task -> {
     
-        logger.info("任务名称：" + task.getName());
+       logger.info("任务名称：" + task.getName());
     
-        // 签收任务，指定任务id和办理人
+       // 签收任务，指定任务id和办理人
     
-        taskService.claim(task.getId(), "zhangsan");
+       taskService.claim(task.getId(), "zhangsan");
     
-        // 处理任务，流程流转至下一节点，本例即"审核财务报表"
+       // 处理任务，流程流转至下一节点，本例即"审核财务报表"
     
-        taskService.complete(task.getId());
+       taskService.complete(task.getId());
     
     });
  
