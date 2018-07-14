@@ -58,9 +58,9 @@
 * 获取流程引擎对象
 
 
-        // 获得ProcessEngine流程引擎对象
+    // 获得ProcessEngine流程引擎对象
     
-        ProcessEngine processEngine = ProcessEngines.getDefaultProcessEngine();
+    ProcessEngine processEngine = ProcessEngines.getDefaultProcessEngine();
 
 * 获取流程部署对象
 
