@@ -18,7 +18,7 @@
 
 * 工作流引擎
 
-依赖activiti-engine依赖：
+依赖activiti-engine：
 
     <dependency>
         <groupId>org.activiti</groupId>
@@ -26,8 +26,9 @@
         <version>7-201802-EA</version>
     </dependency>
 
-* 引入h2内存数据库
+* 数据库
 
+依赖h2内存数据库：
  
     <dependency>
         <groupId>com.h2database</groupId>
@@ -37,7 +38,8 @@
 
 * 引入log4j依赖
 
- 
+依赖log4j日志：
+
     <dependency>
         <groupId>log4j</groupId>
         <artifactId>log4j</artifactId>
@@ -99,15 +101,15 @@
     
     tasks.stream().forEach(task -> {
     
-       logger.info("任务名称：" + task.getName());
+    logger.info("任务名称：" + task.getName());
     
-       // 签收任务，指定任务id和办理人
+    // 签收任务，指定任务id和办理人
     
-       taskService.claim(task.getId(), "zhangsan");
+    taskService.claim(task.getId(), "zhangsan");
     
-       // 处理任务，流程流转至下一节点，本例即"审核财务报表"
+    // 处理任务，流程流转至下一节点，本例即"审核财务报表"
     
-       taskService.complete(task.getId());
+    taskService.complete(task.getId());
     
     });
  
