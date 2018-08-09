@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
+         version="3.1">
+    <display-name>Archetype Created Web Application</display-name>
+
+    <context-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>classpath:spring/spring-config.xml</param-value>
+    </context-param>
+    <listener>
+        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+    </listener>
+
+    <filter>
+        <filter-name>characterEncoding</filter-name>
+        <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+        <init-param>
+            <param-name>encoding</param-name>
+            <param-value>UTF-8</param-value>
+        </init-param>
+    </filter>
+    <filter-mapping>
+        <filter-name>characterEncoding</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+    <servlet>
+        <!-- Servlet名称，可任意定义，但必须与servlet-mapping中对应 -->
+        <servlet-name>dispatcher</servlet-name>
+        <!-- 指定Spring MVC核心控制类，即J2EE规范中的前端控制器（Front Controller） -->
+        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+        <!-- 指定Spring MVC配置文件，默认在WEB-INF目录下，切名字为[servlet-name]-servlet.xml，此文件中配置web相关内容，比如：指定扫描Controller路径、配置逻辑视图前缀后缀、上传文件等等 -->
+        <init-param>
+            <param-name>contextConfigLocation</param-name>
+            <param-value>classpath:spring/spring-mvc-servlet.xml</param-value>
+        </init-param>
+        <!-- 此配置的值为正整数时，表示容器启动时初始化，即调用Servlet的init方法 -->
+        <load-on-startup>1</load-on-startup>
+        <async-supported>true</async-supported>
+    </servlet>
+    <!-- 定义servlet映射 -->
+    <servlet-mapping>
+        <!-- 与servlet中servlet-name对应 -->
+        <servlet-name>dispatcher</servlet-name>
+        <!-- 映射所有的url -->
+        <url-pattern>/</url-pattern>
+    </servlet-mapping>
+
+</web-app>
