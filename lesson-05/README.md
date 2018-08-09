@@ -1,0 +1,15 @@
+### 与Spring集成
+我们可以在无Spring环境下使用Acticiti，但Acticiti为我们提供了优雅的集成Spring。
+
+* ProcessEngineFactoryBean
+
+ProcessEngine可以配置成一个普通的Spring Bean。Acticiti与Spring集成是通过
+ProcessEngineFactoryBean，该bean通过Process Engine configuration创建process engine。
+
+### 事物Transactions
+
+当通过SpringProcessEngineConfiguration的属性dataSource配置数据源时，
+Activiti内部使用org.springframework.jdbc.datasource.TransactionAwareDataSourceProxy
+对dataSource进行包装。这样做是为了从DataSource获取的SQL连接和Spring事物相结合。
+
+
