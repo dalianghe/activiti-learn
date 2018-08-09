@@ -17,13 +17,9 @@
         -->
         <property name="databaseSchemaUpdate" value="true"/>
 
-        <property name="asyncExecutorActivate" value="false"/>
+        <!--<property name="asyncExecutorActivate" value="false"/>-->
 
-        <!--<property name="mailServerHost" value="smtp.163.com"></property>
-        <property name="mailServerPort" value="25"></property>
-        <property name="mailServerDefaultFrom" value="hedaliangvip@163.com"></property>
-        <property name="mailServerUsername" value="hedaliang@jd.com"></property>
-        <property name="mailServerPassword" value="hdl820606"></property>-->
+
 
     </bean>
 
